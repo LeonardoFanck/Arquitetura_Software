@@ -13,6 +13,7 @@ public class Calculadora
         valorAtual = ExpressionInterpreter.Interpret(expression);
     }
 
+    // ============= Memento =============
     public void Desfazer()
     {
         if (historyUndo.Count > 0)
@@ -24,6 +25,7 @@ public class Calculadora
         }
     }
 
+    // ============= Memento =============
     public void Fazer()
     {
         if (historyDo.Count > 0)

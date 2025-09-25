@@ -1,5 +1,6 @@
 ﻿namespace Aula_5.Classes;
 
+// ============= Template Method =============
 public abstract class Operacao
 {
     public double Executar(double valor1, double valor2)

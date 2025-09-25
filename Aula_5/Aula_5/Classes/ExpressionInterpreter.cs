@@ -1,5 +1,6 @@
 ﻿namespace Aula_5.Classes;
 
+// ============= Interpreter =============
 public class ExpressionInterpreter
 {
     public static double Interpret(string expression)
