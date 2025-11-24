@@ -1,0 +1,18 @@
+@EventosAuth_HostAddress = http://localhost:5137
+
+GET {{EventosAuth_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{EventosAuth_HostAddress}}/weatherforecast/login
+###
+
+
+GET {{EventosAuth_HostAddress}}/weatherforecast/testeAuth
+
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImxlbyIsIm5iZiI6MTc2Mzk4ODk2NCwiZXhwIjoxNzY0MDE3NzY0LCJpYXQiOjE3NjM5ODg5NjR9.KE6ugu81ycW8dLvBatP9pOyz9tfrLp-f-nUs_chTsPo
+###
+
+GET {{EventosAuth_HostAddress}}/weatherforecast/testeAuth2
+###
