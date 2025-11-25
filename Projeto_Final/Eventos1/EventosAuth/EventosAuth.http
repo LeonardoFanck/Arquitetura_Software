@@ -1,0 +1,8 @@
+@EventosAuth_HostAddress = http://localhost:5036
+
+GET {{EventosAuth_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{EventosAuth_HostAddress}}/Auth/login

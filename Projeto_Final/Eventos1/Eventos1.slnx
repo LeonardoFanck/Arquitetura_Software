@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../EventosModel/EventosModel/EventosModel.csproj" />
+  <Project Path="Eventos1/Eventos1.csproj" />
+  <Project Path="EventosAuth/EventosAuth.csproj" Id="149d8ce1-fefb-4f1d-8f46-53336f618396" />
+  <Project Path="EventosCliente/EventosCliente.csproj" Id="ef3a0715-25d1-428a-af16-aecfa4f41520" />
+</Solution>

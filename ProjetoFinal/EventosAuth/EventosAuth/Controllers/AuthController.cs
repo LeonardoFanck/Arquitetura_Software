@@ -16,7 +16,7 @@ public class AuthController(IConfiguration configuration, IRepository<User> repo
 	private readonly IConfiguration _configuration = configuration;
 	private readonly IRepository<User> _repository = repository;	
 
-	[HttpGet("login")]
+	[HttpPost("login")]
 	public async Task<IActionResult> Login(UserLogin userLogin)
 	{
 		if (!ModelState.IsValid)
@@ -29,7 +29,7 @@ public class AuthController(IConfiguration configuration, IRepository<User> repo
 
 		var token = GerarToken(user);
 
-		return Ok(new { token });
+		return Ok(token);
 	}
 
 	private static string GerarToken(User user)

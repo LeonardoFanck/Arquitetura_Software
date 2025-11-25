@@ -1,0 +1,30 @@
+# @Eventos1_HostAddress = http://localhost:5001
+@Eventos1_HostAddress = https://localhost:7049
+
+GET {{Eventos1_HostAddress}}/weatherforecast/
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJleHAiOjE3NjM5ODI2MzAsImlzcyI6IkF1dGhBUEkiLCJhdWQiOiJBdXRoQXBpVXNlcnMifQ.RP8xAc_k5MrLfAYlRHko3dZXoPwOX8ibyIUn0zEYwks
+###
+
+
+@Auth_Address = "api/auth"
+
+### @name login
+POST {{Eventos1_HostAddress}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123"
+}
+
+
+### Registrar usuário
+POST {{Eventos1_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "leonardo2",
+  "email": "leonardo@mail.com",
+  "password": "Senha123!"
+}

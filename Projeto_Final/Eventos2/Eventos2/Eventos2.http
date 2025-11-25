@@ -1,0 +1,26 @@
+@Eventos2_HostAddress = http://localhost:5228
+@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5OGU4ZjlkOC1mZjc3LTQ5YzgtOTE5YS03NTY2Y2MyMmM0ZGEiLCJ1bmlxdWVfbmFtZSI6Imxlb25hcmRvMiIsImV4cCI6MTc2MzYxMTkwMSwiaXNzIjoiQXV0aEFwaSIsImF1ZCI6IkF1dGhBcGlVc2VycyJ9.QDq8F8oZCJJm68oBu2xVb4saD25_-vWlzLiGQdrGlvM
+
+# GET {{Eventos2_HostAddress}}/WeatherForecast/privado
+# Accept: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJleHAiOjE3NjM3MDMwNDIsImlzcyI6IkF1dGhBcGkiLCJhdWQiOiJBdXRoQXBpVXNlcnMifQ.x3Tor1epvrVukN6Mr8HyQy9iK5orzlrOytzLSeuJR5I
+
+###
+GET {{Eventos2_HostAddress}}/WeatherForecast
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidGVzdGUxMjMiLCJleHAiOjE3NjM3MDU2NzksImlzcyI6IkF1dGhBUEkiLCJhdWQiOiJBdXRoQXBpVXNlcnMifQ.j4REuOwl6SfVuwi0hACYoOBOkZ86m6mVuTy3wpGjbWe3OIoF_blIiG6uiMZHtXZSC0KszsJJGvNwQDqwMxexkA
+
+###
+GET {{Eventos2_HostAddress}}/Teste/ping
+Accept: application/json
+
+###
+GET {{Eventos2_HostAddress}}/Teste
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJleHAiOjE3NjM3MDMxNjYsImlzcyI6IkF1dGhBUEkiLCJhdWQiOiJBdXRoQXBpVXNlcnMifQ.A06Z_2zGBe-VYmNhsURycq3jPDEDyfRlglbHrRyMK7g
+Accept: application/json
+
+### @name login
+POST {{Eventos2_HostAddress}}/WeatherForecast/login?model=teste123
+Accept: application/json
+
+

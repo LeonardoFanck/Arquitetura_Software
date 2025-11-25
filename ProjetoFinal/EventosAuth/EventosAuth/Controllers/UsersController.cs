@@ -32,7 +32,19 @@ namespace EventosAuth.Controllers
 			return Ok(user);
 		}
 
-		[HttpPost]
+        [HttpGet("getByEmail")]
+        [Authorize]
+        public async Task<ActionResult> GetByEmail(string email)
+        {
+            var user = await _userRepository.GetByExpression(x => x.Email == email);
+
+            if (user is null)
+                return NotFound("Usuário não localizado");
+
+            return Ok(user);
+        }
+
+        [HttpPost]
 		public async Task<ActionResult> Create(User user)
 		{
 			await _userRepository.CreateAsync(user);
