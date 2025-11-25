@@ -1,0 +1,42 @@
+﻿@model List<EventosWebClient.ViewModel.EventoViewModel>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Eventos Disponíveis</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">@TempData["Error"]</div>
+    }
+
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@item.Evento.Titulo</h5>
+                        <p class="card-text">@item.Evento.Descricao</p>
+                        <p class="card-text">
+                            <strong>Data:</strong> @item.Evento.DataInicio.ToString("dd/MM/yyyy HH:mm") - @item.Evento.DataFim.ToString("dd/MM/yyyy HH:mm")
+                        </p>
+                        <p class="card-text"><strong>Vagas Totais:</strong> @item.Evento.Vagas</p>
+                        <p class="card-text"><strong>Vagas Disponíveis:</strong> @(item.Evento.Vagas - item.Evento.VagasUtilizadas)</p>
+
+                        @if (item.IsInscrito)
+                        {
+                            <button class="btn btn-secondary mt-auto" disabled>Já Inscrito</button>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Inscrever", new { id = item.Evento.Id })" class="btn btn-primary mt-auto">Inscrever-se</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

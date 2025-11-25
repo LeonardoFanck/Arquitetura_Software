@@ -5,4 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface CertificadoRepository extends JpaRepository<Certificado, UUID>{}
+public interface CertificadoRepository extends JpaRepository<Certificado, UUID>{
+
+    Certificado findByUserIdAndEventoId(UUID userId, UUID eventoId);
+}

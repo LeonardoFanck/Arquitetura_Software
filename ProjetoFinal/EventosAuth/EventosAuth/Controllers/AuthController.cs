@@ -40,6 +40,7 @@ public class AuthController(IConfiguration configuration, IRepository<User> repo
 		{
 			Subject = new ClaimsIdentity([
 				new Claim(ClaimTypes.Name, user.Nome),
+				new Claim("userID", user.Id.ToString())
 					]),
 			Expires = DateTime.UtcNow.AddHours(8),
 			SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

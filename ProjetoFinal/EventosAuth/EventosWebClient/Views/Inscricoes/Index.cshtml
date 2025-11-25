@@ -1,0 +1,79 @@
+﻿@model List<EventosWebClient.ViewModel.InscricoesViewModel>
+
+@{
+    ViewData["Title"] = "Minhas Inscrições";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4 fw-bold">Minhas Inscrições</h2>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center text-muted fs-5">Você ainda não está inscrito em nenhum evento.</div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                var evento = item.Evento;
+                var inscricao = item.Inscricao;
+                bool eventoPassou = evento.DataFim < DateTime.Now;
+
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100 border-0 rounded-4 p-2">
+
+                        <div class="card-body">
+
+                            <h5 class="card-title fw-bold">@evento.Titulo</h5>
+
+                            <p class="text-muted mb-1">
+                                <i class="bi bi-calendar-event"></i>
+                                @evento.DataInicio.ToString("dd/MM/yyyy HH:mm")
+                                -
+                                @evento.DataFim.ToString("dd/MM/yyyy HH:mm")
+                            </p>
+
+                            <p class="small">
+                                @evento.Descricao
+                            </p>
+
+                            <div class="mt-4">
+
+                                @if (eventoPassou)
+                                {
+                                    <!-- Evento já passou → mostrar botão de certificado -->
+                                    <form method="post" action="/inscricoes/GerarCertificado">
+                                        <input type="hidden" name="idInscricao" value="@inscricao.Id" />
+                                        <button type="submit"
+                                                class="btn btn-success w-100 rounded-pill fw-semibold">
+                                            <i class="bi bi-award"></i> Gerar Certificado
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <!-- Evento ainda vai acontecer → botão cancelar -->
+                                    <form method="post" action="/inscricoes/cancelar">
+                                        <input type="hidden" name="id" value="@inscricao.Id" />
+                                        <button type="submit"
+                                                class="btn btn-outline-danger w-100 rounded-pill fw-semibold">
+                                            <i class="bi bi-x-circle"></i> Cancelar Inscrição
+                                        </button>
+                                    </form>
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

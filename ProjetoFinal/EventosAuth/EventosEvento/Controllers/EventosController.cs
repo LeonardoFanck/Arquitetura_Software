@@ -19,6 +19,13 @@ public class EventosController(IRepository<Evento> repository) : ControllerBase
 		return Ok(eventos);
 	}
 
+	[HttpGet("getAllAvailable")]
+	public async Task<ActionResult> GetAllAvailable()
+	{
+		var eventos = await _repository.GetAllByExpression(x => x.DataFim > DateTime.UtcNow);
+		return Ok(eventos);
+	}
+
 	[HttpGet]
 	public async Task<ActionResult> Get(Guid id)
 	{

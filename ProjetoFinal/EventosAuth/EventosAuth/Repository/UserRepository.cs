@@ -53,4 +53,12 @@ public class UserRepository(AppDbContext context) : IRepository<User>
 
 		return await _context.Users.FirstOrDefaultAsync(expression);
 	}
+
+	public async Task<IEnumerable<User>> GetAllByExpression(Expression<Func<User, bool>> expression, bool noTracking = false)
+	{
+		if (noTracking)
+			return await _context.Users.AsNoTracking().Where(expression).ToListAsync();
+
+		return await _context.Users.Where(expression).ToListAsync();
+	}
 }

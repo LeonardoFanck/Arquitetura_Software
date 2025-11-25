@@ -19,6 +19,9 @@ public class Certificado {
     private LocalDateTime DataEmissao;
     private String CodigoAutenticacao;
 
+    @Lob
+    private byte[] pdfArquivo;
+
     public Certificado(){
 
     }
@@ -61,5 +64,13 @@ public class Certificado {
 
     public void setCodigoAutenticacao(String codigoAutenticacao) {
         CodigoAutenticacao = codigoAutenticacao;
+    }
+
+    public byte[] getPdfArquivo() {
+        return pdfArquivo;
+    }
+
+    public void setPdfArquivo(byte[] pdfArquivo) {
+        this.pdfArquivo = pdfArquivo;
     }
 }

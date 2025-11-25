@@ -1,7 +1,50 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Portal de Eventos";
+    var user = Context.Session.GetUserSession();
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome @(ViewBag.Nome is not null ? ViewBag.Nome : "")</h1>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Bem-vindo @(user is not null ? user.Nome : "") ao Portal de Eventos</h1>
+
+    <div class="row g-4 justify-content-center">
+
+        <!-- Pesquisar Eventos -->
+        <div class="col-md-4">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <i class="bi bi-calendar-event display-1 mb-3"></i>
+                    <h5 class="card-title">Pesquisar Eventos</h5>
+                    <a href="@Url.Action("Index", "Eventos")" class="btn btn-light mt-3">Acessar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Minhas Inscrições -->
+        <div class="col-md-4">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <i class="bi bi-journal-check display-1 mb-3"></i>
+                    <h5 class="card-title">Minhas Inscrições</h5>
+                    <a href="@Url.Action("Index", "Inscricoes")" class="btn btn-light mt-3">Acessar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Validar Certificado -->
+        <div class="col-md-4">
+            <div class="card text-white bg-dark h-100">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <i class="bi bi-award display-1 mb-3"></i>
+                    <h5 class="card-title">Validar Certificado</h5>
+                    <a href="@Url.Action("ValidarCertificado")" class="btn btn-light mt-3">Acessar</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

@@ -2,6 +2,7 @@ package com.leonardoFanck.Eventos.Controller;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,4 +53,29 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token inválido");
         }
     }
+
+    public UUID getUserIdFromToken(String token) {
+        try {
+            if (token.startsWith("Bearer "))
+                token = token.substring(7);
+
+            DecodedJWT decoded = JWT.require(Algorithm.HMAC256(SECRET))
+                    .build()
+                    .verify(token);
+
+            // Pega a claim "userID" criada no C#
+            String userIdStr = decoded.getClaim("userID").asString();
+
+            if (userIdStr == null || userIdStr.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token sem userID");
+            }
+
+            return UUID.fromString(userIdStr);
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token inválido ou userID ausente");
+        }
+    }
+
+
 }

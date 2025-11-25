@@ -8,4 +8,6 @@ public class Certificado
 
 	public DateTime DataEmissao { get; set; }
 	public string CodigoAutenticacao { get; set; } = string.Empty;
+
+	public byte[] PdfArquivo { get; set; } = [];
 }

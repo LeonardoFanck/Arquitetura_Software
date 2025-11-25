@@ -2,6 +2,7 @@
 using EventosShared.Interfaces;
 using EventosShared.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace EventosEvento.Repository;
@@ -30,6 +31,14 @@ public class CheckInRepository(AppDbContext context) : IRepository<CheckIn>
 	public async Task<IEnumerable<CheckIn>> GetAllAsync()
 	{
 		return await _context.CheckIns.ToListAsync();
+	}
+
+	public async Task<IEnumerable<CheckIn>> GetAllByExpression(Expression<Func<CheckIn, bool>> expression, bool noTracking = false)
+	{
+		if (noTracking)
+			return await _context.CheckIns.AsNoTracking().Where(expression).ToListAsync();
+
+		return await _context.CheckIns.Where(expression).ToListAsync();
 	}
 
 	public async Task<CheckIn?> GetByExpression(Expression<Func<CheckIn, bool>> expression, bool noTracking = false)

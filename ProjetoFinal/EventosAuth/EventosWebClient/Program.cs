@@ -6,12 +6,12 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddHttpClient("EventosAuth", client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5137/");
+    client.BaseAddress = new Uri("https://localhost:7015/");
 });
 
-builder.Services.AddHttpClient("ProdutoApi", client =>
+builder.Services.AddHttpClient("EventosEvento", client =>
 {
-    client.BaseAddress = new Uri("https://produtos-api.com/");
+    client.BaseAddress = new Uri("https://localhost:7153/");
 });
 
 builder.Services.AddHttpClient("PedidosApi", client =>

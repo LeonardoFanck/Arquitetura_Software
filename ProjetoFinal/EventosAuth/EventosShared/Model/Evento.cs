@@ -8,4 +8,5 @@ public class Evento
 	public DateTime DataInicio { get; set; }
 	public DateTime DataFim { get; set; }
 	public int Vagas { get; set; }
-	}
+	public int VagasUtilizadas { get; set; }
+}

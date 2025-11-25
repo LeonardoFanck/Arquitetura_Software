@@ -19,6 +19,20 @@ public class InscricoesController(IRepository<Inscricao> repository) : Controlle
 		return Ok(eventos);
 	}
 
+	[HttpGet("getAllByUser")]
+	public async Task<ActionResult> GetAllByUser(Guid id)
+	{
+		var eventos = await _repository.GetAllByExpression(e => e.UserId == id);
+		return Ok(eventos);
+	}
+
+	[HttpGet("getAllByEvent")]
+	public async Task<ActionResult> GetAllByEvent(Guid id)
+	{
+		var eventos = await _repository.GetAllByExpression(e => e.EventoId == id);
+		return Ok(eventos);
+	}
+
 	[HttpGet]
 	public async Task<ActionResult> Get(Guid id)
 	{
