@@ -13,11 +13,15 @@ public class Certificado {
     @GeneratedValue
     private UUID id;
 
+    @Column(name = "user_id")
     private UUID userId;
     private UUID eventoId;
 
-    private LocalDateTime DataEmissao;
-    private String CodigoAutenticacao;
+    @Column(name = "data_emissao")
+    private LocalDateTime dataEmissao;
+
+    @Column(name = "codigo_autenticacao")
+    private String codigoAutenticacao;
 
     @Lob
     private byte[] pdfArquivo;
@@ -51,19 +55,19 @@ public class Certificado {
     }
 
     public LocalDateTime getDataEmissao() {
-        return DataEmissao;
+        return dataEmissao;
     }
 
     public void setDataEmissao(LocalDateTime dataEmissao) {
-        DataEmissao = dataEmissao;
+        this.dataEmissao = dataEmissao;
     }
 
     public String getCodigoAutenticacao() {
-        return CodigoAutenticacao;
+        return codigoAutenticacao;
     }
 
     public void setCodigoAutenticacao(String codigoAutenticacao) {
-        CodigoAutenticacao = codigoAutenticacao;
+        this.codigoAutenticacao = codigoAutenticacao;
     }
 
     public byte[] getPdfArquivo() {

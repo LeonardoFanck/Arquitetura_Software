@@ -56,6 +56,11 @@ public class CertificadosController {
         return _context.findAll();
     }
 
+    @GetMapping("/GetAllByUserId/{id}")
+    public List<Certificado> GetAllByUserId(@PathVariable UUID id, @RequestHeader("Authorization") String authHeader){
+        validar(authHeader);
+        return _context.findAllByUserId(id);
+    }
 
     @GetMapping("/{id}")
     public Certificado GetById(@PathVariable UUID id, @RequestHeader("Authorization") String authHeader){
@@ -65,11 +70,25 @@ public class CertificadosController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Certificado não encontrado"));
     }
 
+    @GetMapping("/getCertificadoByCodigo/{id}")
+    public Certificado getCertificadoByCodigo(@PathVariable String id){
+
+        Certificado certificado = _context.findByCodigoAutenticacao(id);
+
+        if(certificado == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Certificado não encontrado");
+
+        return certificado;
+    }
 
     @PostMapping
     public Certificado create(@RequestBody Certificado certificado, 
                               @RequestHeader("Authorization") String authHeader) {
         validar(authHeader);
+
+        certificado.setId(null);
+        //certificado.setDataEmissao(LocalDateTime.now());
+        //certificado.setCodigoAutenticacao(UUID.randomUUID().toString().replace("-","").toUpperCase());
 
         certificado.setPdfArquivo(gerarPdf(certificado, authHeader));
 
@@ -106,8 +125,8 @@ public class CertificadosController {
     private byte[] gerarPdf(Certificado cert, String token) {
 
         Usuario usuario = webClient.get()
-                .uri("https://localhost:7015/user?id=" + cert.getUserId())
-                .header("Authorization", "Bearer " + token)
+                .uri("https://localhost:7015/users?id=" + cert.getUserId())
+                .header("Authorization", token)
                 .retrieve()
                 .bodyToMono(Usuario.class)
                 .block();
@@ -115,7 +134,7 @@ public class CertificadosController {
         // -------- 2) Buscar evento --------
         Evento evento = webClient.get()
                 .uri("https://localhost:7153/eventos?id=" + cert.getEventoId())
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", token)
                 .retrieve()
                 .bodyToMono(Evento.class)
                 .block();

@@ -27,7 +27,7 @@ public class TokenFilter implements Filter {
 
         // 🔓 Permite o login sem token
         String path = req.getRequestURI();
-        if (path.startsWith("/auth")) {
+        if (path.startsWith("/auth") || path.startsWith("/certificados/getCertificadoByCodigo")) {
             chain.doFilter(request, response);
             return;
         }

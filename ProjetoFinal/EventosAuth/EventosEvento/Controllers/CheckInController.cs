@@ -28,6 +28,13 @@ public class CheckInController(IRepository<CheckIn> repository) : ControllerBase
 		return Ok(evento);
 	}
 
+	[HttpGet("getAllByUserId")]
+	public async Task<IActionResult> GetAllByUserId(Guid id)
+	{
+		var checkIn = await _repository.GetAllByExpression(x => x.UserId == id);
+		return Ok(checkIn);
+	}
+
 	[HttpPost]
 	public async Task<ActionResult> Create(CheckIn checkIn)
 	{

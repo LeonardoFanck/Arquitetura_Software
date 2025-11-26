@@ -1,0 +1,96 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "Validar Certificado";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4">
+
+                    <h3 class="card-title text-center mb-3"><i class="bi bi-shield-check me-2"></i>Validar Certificado</h3>
+                    <p class="text-muted text-center mb-4">Insira o código de autenticação do certificado para verificar sua validade.</p>
+
+                    <form method="post" action="/Certificado/Validar" class="mb-3" id="validarForm" autocomplete="off">
+                        <div class="mb-3">
+                            <label for="codigo" class="form-label">Código de Autenticação</label>
+                            <input id="codigo" name="codigo" type="text" class="form-control form-control-lg" value="@Model"
+                                   placeholder="Ex: ABCD1234EF" required autofocus />
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill">
+                                <i class="bi bi-search me-2"></i>Validar
+                            </button>
+                        </div>
+                    </form>
+
+                    @* Resultado retornado do controller *@
+                    @if (TempData["success"] is not null || TempData["Error"] is not null)
+                    {
+                        <div class="mt-4">
+                            @if (TempData["success"] is not null)
+                            {
+                                <div class="alert alert-success d-flex align-items-center" role="alert">
+                                    <i class="bi bi-check-circle-fill fs-4 me-2"></i>
+                                    <div>
+                                        <strong>Certificado válido.</strong>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                    <i class="bi bi-x-circle-fill fs-4 me-2"></i>
+                                    <div>
+                                        <strong>Certificado inválido.</strong>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <hr />
+
+                    <small class="text-muted">
+                        Dúvidas? Entre em contato com o suporte. O código de autenticação aparece no seu certificado.
+                    </small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Ativa foco e permite submeter com Enter — já coberto pelo form, mas mantemos utilidade extra.
+        (function () {
+            const input = document.getElementById('codigo');
+            if (input) {
+                input.focus();
+                // optional: transform to uppercase while typing
+                input.addEventListener('input', () => {
+                    const pos = input.selectionStart;
+                    input.value = input.value.toUpperCase();
+                    input.setSelectionRange(pos, pos);
+                });
+            }
+
+            // you can also intercept submit to show loading state
+            const form = document.getElementById('validarForm');
+            if (form) {
+                form.addEventListener('submit', () => {
+                    const btn = form.querySelector('button[type="submit"]');
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Validando...';
+                    }
+                });
+            }
+        })();
+    </script>
+}

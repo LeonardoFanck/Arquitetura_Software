@@ -14,12 +14,10 @@ builder.Services.AddHttpClient("EventosEvento", client =>
     client.BaseAddress = new Uri("https://localhost:7153/");
 });
 
-builder.Services.AddHttpClient("PedidosApi", client =>
+builder.Services.AddHttpClient("EventosCertificado", client =>
 {
-    client.BaseAddress = new Uri("https://pedidos-api.com/");
+    client.BaseAddress = new Uri("http://localhost:8080/");
 });
-
-builder.Services.AddSession();
 
 var app = builder.Build();
 
