@@ -15,10 +15,8 @@ public class AppDbContext : DbContext
 	public DbSet<CheckIn> CheckIns { get; set; }
 	public DbSet<Inscricao> Inscricaos { get; set; }
 
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
 	{
-		base.OnConfiguring(optionsBuilder);
 
-		optionsBuilder.UseSqlite("Data Source=evento.db");
 	}
 }

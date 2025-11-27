@@ -20,20 +20,82 @@
 			base.Dispose(disposing);
 		}
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
-			this.components = new System.ComponentModel.Container();
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 450);
-			this.Text = "FormPrincipal";
-		}
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            BtnEventos = new Button();
+            BtnParticipante = new Button();
+            BtnSincronizar = new Button();
+            BtnSair = new Button();
+            SuspendLayout();
+            // 
+            // BtnEventos
+            // 
+            BtnEventos.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            BtnEventos.Location = new Point(77, 45);
+            BtnEventos.Name = "BtnEventos";
+            BtnEventos.Size = new Size(173, 70);
+            BtnEventos.TabIndex = 1;
+            BtnEventos.Text = "Listar Eventos";
+            BtnEventos.UseVisualStyleBackColor = true;
+            BtnEventos.Click += BtnEventos_Click;
+            // 
+            // BtnParticipante
+            // 
+            BtnParticipante.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            BtnParticipante.Location = new Point(77, 139);
+            BtnParticipante.Name = "BtnParticipante";
+            BtnParticipante.Size = new Size(173, 70);
+            BtnParticipante.TabIndex = 2;
+            BtnParticipante.Text = "Cadastrar participante";
+            BtnParticipante.UseVisualStyleBackColor = true;
+            BtnParticipante.Click += BtnParticipante_Click;
+            // 
+            // BtnSincronizar
+            // 
+            BtnSincronizar.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            BtnSincronizar.Location = new Point(77, 233);
+            BtnSincronizar.Name = "BtnSincronizar";
+            BtnSincronizar.Size = new Size(173, 70);
+            BtnSincronizar.TabIndex = 3;
+            BtnSincronizar.Text = "Sincronizar dados";
+            BtnSincronizar.UseVisualStyleBackColor = true;
+            BtnSincronizar.Click += BtnSincronizar_Click;
+            // 
+            // BtnSair
+            // 
+            BtnSair.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            BtnSair.Location = new Point(77, 358);
+            BtnSair.Name = "BtnSair";
+            BtnSair.Size = new Size(173, 70);
+            BtnSair.TabIndex = 4;
+            BtnSair.Text = "Sair do sistema";
+            BtnSair.UseVisualStyleBackColor = true;
+            BtnSair.Click += BtnSair_Click;
+            // 
+            // FormPrincipal
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(328, 450);
+            Controls.Add(BtnSair);
+            Controls.Add(BtnSincronizar);
+            Controls.Add(BtnParticipante);
+            Controls.Add(BtnEventos);
+            Name = "FormPrincipal";
+            Text = "FormPrincipal";
+            ResumeLayout(false);
+        }
 
-		#endregion
-	}
+        #endregion
+        private Button BtnEventos;
+        private Button BtnParticipante;
+        private Button BtnSincronizar;
+        private Button BtnSair;
+    }
 }
