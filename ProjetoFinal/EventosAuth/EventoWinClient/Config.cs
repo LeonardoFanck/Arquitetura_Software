@@ -1,8 +1,11 @@
-﻿namespace EventoWinClient;
+﻿using EventosShared.Model;
+
+namespace EventoWinClient;
 
 public static class Config
 {
 	public static string AuthToken { get; set; } = string.Empty;
+	public static User User { get; set; } = null!;
 
 	public static HttpClient HttpClientAuth { get; } = new HttpClient
 	{
@@ -18,4 +21,23 @@ public static class Config
 	{
 		BaseAddress = new Uri("http://localhost:8080/")
 	};
+
+	public static async Task<bool> HasNetworkAsync()
+	{
+		try
+		{
+			HttpClient client = new()
+			{
+				Timeout = TimeSpan.FromSeconds(3)
+			};
+
+			using var response = await client.GetAsync("https://www.google.com");
+
+			return response.IsSuccessStatusCode;
+		}
+		catch
+		{
+			return false;
+		}
+	}
 }
