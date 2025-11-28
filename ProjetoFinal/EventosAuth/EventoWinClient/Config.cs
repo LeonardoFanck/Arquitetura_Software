@@ -22,8 +22,12 @@ public static class Config
 		BaseAddress = new Uri("http://localhost:8080/")
 	};
 
+	public static bool Internet { get; set; } = true;
+
 	public static async Task<bool> HasNetworkAsync()
 	{
+		return Internet;
+
 		try
 		{
 			HttpClient client = new()

@@ -70,14 +70,6 @@ public class InscricoesController : Controller
 
 		var certificados = await response.Content.ReadFromJsonAsync<List<Certificado>>() ?? [];
 
-		//var minhasInscricoes = (from inscricao in inscricoes
-		//						join evento in eventos on inscricao.EventoId equals evento.Id
-		//						select new InscricoesViewModel
-		//						{
-		//							Evento = evento,
-		//							Inscricao = inscricao
-		//						}).ToList();
-
 		var minhasInscricoes = (from inscricao in inscricoes
 								join evento in eventos
 									on inscricao.EventoId equals evento.Id into gj
@@ -89,7 +81,6 @@ public class InscricoesController : Controller
 									CheckIn = checkIns.FirstOrDefault(c => c.EventoId == evento.Id),
 									Certificado = certificados.FirstOrDefault(x => x.EventoId == evento.Id)
 								}).ToList();
-
 
 		return View(minhasInscricoes);
 	}

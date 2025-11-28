@@ -19,6 +19,8 @@ builder.Services.AddHttpClient("EventosCertificado", client =>
     client.BaseAddress = new Uri("http://localhost:8080/");
 });
 
+builder.Services.AddSession();
+
 var app = builder.Build();
 
 app.UseSession();

@@ -32,19 +32,30 @@ public class UsersController(IRepository<User> userRepository) : ControllerBase
 		return Ok(user);
 	}
 
-        [HttpGet("getByEmail")]
-        [Authorize]
-        public async Task<ActionResult> GetByEmail(string email)
-        {
-            var user = await _userRepository.GetByExpression(x => x.Email == email);
+	[HttpGet("getByEmail")]
+	[Authorize]
+	public async Task<ActionResult> GetByEmail(string email)
+	{
+		var user = await _userRepository.GetByExpression(x => x.Email == email);
 
-            if (user is null)
-                return NotFound("Usuário não localizado");
+		if (user is null)
+			return NotFound("Usuário não localizado");
 
-            return Ok(user);
-        }
+		return Ok(user);
+	}
 
-        [HttpPost]
+	[HttpGet("verifyEmail")]
+	public async Task<IActionResult> VerifyEmail(string email)
+	{
+		var user = await _userRepository.GetByExpression(x => x.Email == email);
+
+		if (user is null)
+			return Ok();
+
+		return Conflict();
+	}
+
+	[HttpPost]
 	public async Task<ActionResult> Create(User user)
 	{
 		await _userRepository.CreateAsync(user);

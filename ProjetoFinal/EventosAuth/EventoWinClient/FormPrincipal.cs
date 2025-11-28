@@ -8,14 +8,21 @@ namespace EventoWinClient;
 
 public partial class FormPrincipal : Form
 {
-    public FormPrincipal()
-    {
-        InitializeComponent();
+	public FormPrincipal()
+	{
+		InitializeComponent();
 
 		StartPosition = FormStartPosition.CenterScreen;
+		CheckBoxInternet.Checked = Config.Internet;
 
 		Load += FormPrincipal_Load;
-    }
+		CheckBoxInternet.CheckedChanged += CheckBoxInternet_CheckedChanged;
+	}
+
+	private void CheckBoxInternet_CheckedChanged(object? sender, EventArgs e)
+	{
+		Config.Internet = CheckBoxInternet.Checked;
+	}
 
 	private async void FormPrincipal_Load(object? sender, EventArgs e)
 	{
@@ -25,38 +32,43 @@ public partial class FormPrincipal : Form
 	}
 
 	private void BtnSair_Click(object sender, EventArgs e)
-    {
-        Close();
-    }
-
-    private void BtnEventos_Click(object sender, EventArgs e)
-    {
-        var form = new FormEventos();
-        form.ShowDialog();
-    }
-
-    private void BtnParticipante_Click(object sender, EventArgs e)
-    {
-        var form = new FormParticipante();
-        form.ShowDialog();
-    }
-
-    private async void BtnSincronizar_Click(object sender, EventArgs e)
-    {
-		LoadingManager.ShowLoading(this);
-		await SincronizarDados();
-		LoadingManager.HideLoading(this);
-
-		MessageBox.Show("Sincronização concluída com sucesso!");
+	{
+		Close();
 	}
 
-	private static async Task SincronizarDados()
+	private void BtnEventos_Click(object sender, EventArgs e)
 	{
+		var form = new FormEventos();
+		form.ShowDialog();
+	}
+
+	private void BtnParticipante_Click(object sender, EventArgs e)
+	{
+		var form = new FormParticipante();
+		form.ShowDialog();
+	}
+
+	private async void BtnSincronizar_Click(object sender, EventArgs e)
+	{
+		LoadingManager.ShowLoading(this);
+		var resultado = await SincronizarDados();
+		LoadingManager.HideLoading(this);
+
+		if (resultado)
+			MessageBox.Show("Sincronização concluída com sucesso!");
+	}
+
+	private static async Task<bool> SincronizarDados()
+	{
+		if (!await Config.HasNetworkAsync())
+		{
+			MessageBox.Show("Sem conexão com internet, não é possível sincronizar os dados no momento!");
+			return false;
+		}
+
 		var context = DbContextFactory.Create();
 
 		var checkIns = await context.CheckIns.Where(x => !x.Sincronizado).ToListAsync();
-
-		await Task.Delay(5000);
 
 		HttpResponseMessage response;
 
@@ -75,7 +87,7 @@ public partial class FormPrincipal : Form
 			if (!response.IsSuccessStatusCode)
 			{
 				MessageBox.Show("Erro ao sincronizar check-ins. Processo interrompido.");
-				return;
+				return false;
 			}
 
 			checkInLocal.Sincronizado = true;
@@ -102,7 +114,7 @@ public partial class FormPrincipal : Form
 			if (!response.IsSuccessStatusCode)
 			{
 				MessageBox.Show("Erro ao sincronizar usuários. Processo interrompido.");
-				return;
+				return false;
 			}
 
 			userLocal.Sincronizado = true;
@@ -127,7 +139,7 @@ public partial class FormPrincipal : Form
 			if (!response.IsSuccessStatusCode)
 			{
 				MessageBox.Show("Erro ao sincronizar as inscrições. Processo interrompido.");
-				return;
+				return false;
 			}
 
 			inscricaoLocal.Sincronizado = true;
@@ -140,44 +152,58 @@ public partial class FormPrincipal : Form
 		if (!response.IsSuccessStatusCode)
 		{
 			MessageBox.Show("Não foi possivel buscar os dados dos usuários");
-			return;
+			return false;
 		}
 
 		await context.Users.Where(x => x.Sincronizado).ExecuteDeleteAsync();
+		context.ChangeTracker.Clear();
+		
 		await context.Users.AddRangeAsync(await response.Content.ReadFromJsonAsync<List<UserLocal>>() ?? []);
+		await context.SaveChangesAsync();
 
-		response = await Config.HttpClientEvento.GetAsync($"Eventos/getAll");
+		response = await Config.HttpClientEvento.GetAsync($"Eventos/getAllavailable");
 
 		if (!response.IsSuccessStatusCode)
 		{
 			MessageBox.Show("Não foi possivel buscar os dados dos eventos");
-			return;
+			return false;
 		}
 
 		await context.Eventos.Where(x => x.Sincronizado).ExecuteDeleteAsync();
+		context.ChangeTracker.Clear();
+
 		await context.Eventos.AddRangeAsync(await response.Content.ReadFromJsonAsync<List<EventoLocal>>() ?? []);
+		await context.SaveChangesAsync();
 
 		response = await Config.HttpClientEvento.GetAsync($"CheckIn/getAll");
 
 		if (!response.IsSuccessStatusCode)
 		{
 			MessageBox.Show("Não foi possivel buscar os dados dos check-ins");
-			return;
+			return false;
 		}
 
 		await context.CheckIns.Where(x => x.Sincronizado).ExecuteDeleteAsync();
+		context.ChangeTracker.Clear();
+
 		await context.CheckIns.AddRangeAsync(await response.Content.ReadFromJsonAsync<List<CheckInLocal>>() ?? []);
+		await context.SaveChangesAsync();
 
 		response = await Config.HttpClientEvento.GetAsync($"Inscricoes/getAll");
 		if (!response.IsSuccessStatusCode)
 		{
 			MessageBox.Show("Não foi possivel buscar os dados das inscrições");
-			return;
+			return false;
 		}
 
 		await context.Inscricaos.Where(x => x.Sincronizado).ExecuteDeleteAsync();
-		await context.Inscricaos.AddRangeAsync(await response.Content.ReadFromJsonAsync<List<InscricaoLocal>>() ?? []);
+		context.ChangeTracker.Clear();
 
+		await context.Inscricaos.AddRangeAsync(await response.Content.ReadFromJsonAsync<List<InscricaoLocal>>() ?? []);
 		await context.SaveChangesAsync();
+
+		var leo = await context.Eventos.ToListAsync();
+
+		return true;
 	}
 }

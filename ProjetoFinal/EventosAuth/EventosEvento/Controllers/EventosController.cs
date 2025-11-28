@@ -19,6 +19,7 @@ public class EventosController(IRepository<Evento> repository) : ControllerBase
 		return Ok(eventos);
 	}
 
+	[AllowAnonymous]
 	[HttpGet("getAllAvailable")]
 	public async Task<ActionResult> GetAllAvailable()
 	{

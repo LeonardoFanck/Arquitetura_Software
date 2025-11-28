@@ -33,6 +33,12 @@ public class CertificadoController : Controller
 		if (user is null)
 			return RedirectToAction("Login", "Usuario");
 
+		if(string.IsNullOrEmpty(user.Nome) || string.IsNullOrEmpty(user.Telefone))
+		{
+			TempData["Error"] = "Necessário informar todos os dados para emitir certificado";
+			return RedirectToAction("Perfil", "Usuario");
+		}
+
 		var response = await _clientEvento.GetAsync($"inscricoes?id={idInscricao}");
 
 

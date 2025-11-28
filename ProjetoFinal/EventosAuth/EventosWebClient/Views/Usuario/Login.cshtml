@@ -6,6 +6,16 @@
 
 <h2>Login</h2>
 
+@if(TempData["success"] is not null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
+
+@if (TempData["warning"] is not null)
+{
+    <div class="alert alert-warning">@TempData["warning"]</div>
+}
+
 <form asp-action="Login" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -22,6 +32,8 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Entrar</button>
+    
+    <span class="ms-3">Não tem uma conta? <a  asp-action="Cadastro">Cadastre-se</a></span>
 </form>
 
 @section Scripts {

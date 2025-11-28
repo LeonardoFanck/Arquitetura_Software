@@ -1,14 +1,10 @@
-﻿using EventosShared.Model;
+﻿using Azure;
+using EventosShared.Model;
 using EventosWebClient.Funcoes;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace EventosWebClient.Controllers;
 
@@ -99,11 +95,11 @@ public class UsuarioController(IHttpClientFactory httpClientFactory) : Controlle
 		ModelState["Senha"].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
 
 		if (!ModelState.IsValid)
-			return View("Perfil",user);
+			return View("Perfil", user);
 
 		var userSession = HttpContext.Session.GetUserSession();
 
-		if(string.IsNullOrEmpty(user.Senha))
+		if (string.IsNullOrEmpty(user.Senha))
 		{
 			if (userSession is not null)
 				user.Senha = userSession.Senha;
@@ -126,9 +122,60 @@ public class UsuarioController(IHttpClientFactory httpClientFactory) : Controlle
 		TempData["Success"] = "Perfil atualizado com sucesso!";
 
 		user.Senha = "";
-		return View("Perfil",user);
-
-
-		
+		return View("Perfil", user);
 	}
+
+	public IActionResult Cadastro()
+	{
+		if (HttpContext.Session.GetUserSession() is not null)
+			return RedirectToAction("Index", "Home");
+
+		return View(new User());
+	}
+
+	[HttpPost]
+	public async Task<IActionResult> Cadastro(User user)
+	{
+
+		user.Id = Guid.NewGuid();
+		user.CreatedAt = DateTime.UtcNow;
+
+		if (string.IsNullOrWhiteSpace(user.Telefone))
+			ModelState.AddModelError("Telefone", "O campo telefone é obrigatório.");
+
+		if (string.IsNullOrEmpty(user.Email))
+			ModelState.AddModelError("Email", "O campo email é obrigatório.");
+
+		if (!ModelState.IsValid)
+		{
+			ModelState.AddModelError("", "Dados inválidos");
+			user.Senha = "";
+			return View(user);
+		}
+
+		var client = _httpClientFactory.CreateClient("EventosAuth");
+
+		var response = await client.GetAsync($"users/verifyEmail?email={user.Email}");
+
+		if (!response.IsSuccessStatusCode)
+		{
+			ModelState.AddModelError("email", "Email já cadastrado");
+			user.Senha = "";
+			return View(user);
+		}
+
+		response = await client.PostAsJsonAsync("users", user);
+
+		if (!response.IsSuccessStatusCode)
+		{
+			ModelState.AddModelError("", "Erro ao tentar realizar o cadastro");
+			user.Senha = "";
+			return View(user);
+		}
+
+		TempData["success"] = "Cadastro realizado com sucesso";
+
+		return RedirectToAction("Login");
+	}
+
 }

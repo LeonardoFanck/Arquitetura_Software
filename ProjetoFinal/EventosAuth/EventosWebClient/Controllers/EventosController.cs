@@ -26,9 +26,6 @@ public class EventosController : Controller
 
 		var user = HttpContext.Session.GetUserSession();
 
-		if (user is null)
-			return RedirectToAction("Login", "Usuario");
-
 		var response = await _client.GetAsync("eventos/getAllAvailable");
 
 		if (!response.IsSuccessStatusCode)
@@ -38,6 +35,15 @@ public class EventosController : Controller
 		}
 
 		var eventos = await response.Content.ReadFromJsonAsync<List<Evento>>() ?? [];
+
+		// Se não tiver login só mostra para poder visualizar os eventos
+		if (user is null)
+		{
+			return View(eventos.Select(x => new EventoViewModel
+			{
+				Evento = x,
+			}).ToList());
+		}
 
 		response = await _client.GetAsync($"inscricoes/getAllByUser?id={user.Id}");
 
@@ -66,6 +72,14 @@ public class EventosController : Controller
 
 	public async Task<IActionResult> Inscrever(Guid id)
 	{
+		var user = HttpContext.Session.GetUserSession();
+
+		if (user is null)
+		{
+			TempData["warning"] = "Necessário estar logado para se inscrever em um evento";
+			return RedirectToAction("Login", "Usuario");
+		}
+
 		var token = HttpContext.Session.GetString("Token");
 		_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -91,8 +105,6 @@ public class EventosController : Controller
 				TempData["Error"] = "Não há mais vagas disponíveis para este evento.";
 				return RedirectToAction("Index");
 			}
-
-			var user = HttpContext.Session.GetUserSession()!;
 
 			var inscricao = new Inscricao()
 			{
