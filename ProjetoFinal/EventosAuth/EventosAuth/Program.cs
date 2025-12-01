@@ -8,13 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder(args); ;
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-	options.UseSqlServer(Config.ConnectionString);
+	//options.UseSqlServer(Config.ConnectionString);
+	options.UseMySQL(Config.ConnectionString);
 });
 
 builder.Services.AddAuthentication(x =>

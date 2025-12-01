@@ -14,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-	options.UseSqlServer(Config.ConnectionString);
+	//options.UseSqlServer(Config.ConnectionString);
+	options.UseMySQL(Config.ConnectionString);
 });
 
 builder.Services.AddAuthentication(x =>

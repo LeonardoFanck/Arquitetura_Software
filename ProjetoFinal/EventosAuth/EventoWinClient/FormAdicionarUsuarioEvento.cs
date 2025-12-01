@@ -3,7 +3,6 @@ using EventoWinClient.Context;
 using EventoWinClient.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 
 namespace EventoWinClient;
 
@@ -98,11 +97,11 @@ public partial class FormAdicionarUsuarioEvento : Form
 
 		if (!response.IsSuccessStatusCode)
 		{
-			MessageBox.Show("Erro ao sincronizar inscrição com o servidor.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			MessageBox.Show("Erro ao sincronizar o checkIn com o servidor.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			return;
 		}
 
-		var checkInSincronizado = await response.Content.ReadFromJsonAsync<CheckIn>();
+		//var checkInSincronizado = await response.Content.ReadFromJsonAsync<CheckIn>();
 
 		inscricaoLocal.Sincronizado = true;
 		_dbContext.Inscricaos.Update(inscricaoLocal);
