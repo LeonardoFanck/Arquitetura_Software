@@ -81,6 +81,14 @@ public partial class FormEventoDetalhes : Form
 			return;
 		}
 
+		Email email = new()
+		{
+			Destinatario = usuario.Email,
+			Mensagem = $"Olá {usuario.Nome}, seu check-in para o evento {_evento.Titulo} foi realizado com sucesso em {checkIn.DataCheckIn}."
+		};
+
+        await Config.HttpClientCertificado.PostAsJsonAsync("email/enviar", email);
+
 		checkInLocal.Sincronizado = true;
 
 		context.CheckIns.Update(checkInLocal);

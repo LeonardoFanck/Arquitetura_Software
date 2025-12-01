@@ -1,11 +1,19 @@
 package com.leonardoFanck.Eventos.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "certificado")
 public class Certificado {
 
@@ -26,55 +34,4 @@ public class Certificado {
     @Lob
     private byte[] pdfArquivo;
 
-    public Certificado(){
-
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getId(){
-        return id;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-
-    public UUID getEventoId() {
-        return eventoId;
-    }
-
-    public void setEventoId(UUID eventoId) {
-        this.eventoId = eventoId;
-    }
-
-    public LocalDateTime getDataEmissao() {
-        return dataEmissao;
-    }
-
-    public void setDataEmissao(LocalDateTime dataEmissao) {
-        this.dataEmissao = dataEmissao;
-    }
-
-    public String getCodigoAutenticacao() {
-        return codigoAutenticacao;
-    }
-
-    public void setCodigoAutenticacao(String codigoAutenticacao) {
-        this.codigoAutenticacao = codigoAutenticacao;
-    }
-
-    public byte[] getPdfArquivo() {
-        return pdfArquivo;
-    }
-
-    public void setPdfArquivo(byte[] pdfArquivo) {
-        this.pdfArquivo = pdfArquivo;
-    }
 }

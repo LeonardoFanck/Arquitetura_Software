@@ -1,135 +1,143 @@
 ﻿using EventosShared.Model;
 using EventosWebClient.Funcoes;
 using EventosWebClient.ViewModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace EventosWebClient.Controllers;
 
 public class EventosController : Controller
 {
-	private readonly IHttpClientFactory _httpClientFactory;
-	private readonly HttpClient _client;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly HttpClient _client;
+    private readonly HttpClient _clientEmail;
 
-	public EventosController(IHttpClientFactory httpClientFactory)
-	{
-		_httpClientFactory = httpClientFactory;
-		_client = _httpClientFactory.CreateClient("EventosEvento");
-	}
+    public EventosController(IHttpClientFactory httpClientFactory)
+    {
+        _httpClientFactory = httpClientFactory;
+        _client = _httpClientFactory.CreateClient("EventosEvento");
+        _clientEmail = _httpClientFactory.CreateClient("EventosCertificado");
+    }
 
-	public async Task<IActionResult> Index()
-	{
-		var token = HttpContext.Session.GetString("Token");
-		_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+    public async Task<IActionResult> Index()
+    {
+        var token = HttpContext.Session.GetString("Token");
+        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-		var user = HttpContext.Session.GetUserSession();
+        var user = HttpContext.Session.GetUserSession();
 
-		var response = await _client.GetAsync("eventos/getAllAvailable");
+        var response = await _client.GetAsync("eventos/getAllAvailable");
 
-		if (!response.IsSuccessStatusCode)
-		{
-			TempData["Error"] = "Erro ao obter a lista de eventos, " + await response.Content.ReadAsStringAsync();
-			return View(new List<EventoViewModel>());
-		}
+        if (!response.IsSuccessStatusCode)
+        {
+            TempData["Error"] = "Erro ao obter a lista de eventos, " + await response.Content.ReadAsStringAsync();
+            return View(new List<EventoViewModel>());
+        }
 
-		var eventos = await response.Content.ReadFromJsonAsync<List<Evento>>() ?? [];
+        var eventos = await response.Content.ReadFromJsonAsync<List<Evento>>() ?? [];
 
-		// Se não tiver login só mostra para poder visualizar os eventos
-		if (user is null)
-		{
-			return View(eventos.Select(x => new EventoViewModel
-			{
-				Evento = x,
-			}).ToList());
-		}
+        // Se não tiver login só mostra para poder visualizar os eventos
+        if (user is null)
+        {
+            return View(eventos.Select(x => new EventoViewModel
+            {
+                Evento = x,
+            }).ToList());
+        }
 
-		response = await _client.GetAsync($"inscricoes/getAllByUser?id={user.Id}");
+        response = await _client.GetAsync($"inscricoes/getAllByUser?id={user.Id}");
 
-		if (!response.IsSuccessStatusCode)
-		{
-			TempData["Error"] = "Erro ao obter a lista de eventos, " + await response.Content.ReadAsStringAsync();
-			return View(new List<EventoViewModel>());
-		}
+        if (!response.IsSuccessStatusCode)
+        {
+            TempData["Error"] = "Erro ao obter a lista de eventos, " + await response.Content.ReadAsStringAsync();
+            return View(new List<EventoViewModel>());
+        }
 
-		var inscricoes = await response.Content.ReadFromJsonAsync<List<Inscricao>>() ?? [];
+        var inscricoes = await response.Content.ReadFromJsonAsync<List<Inscricao>>() ?? [];
 
-		if (!response.IsSuccessStatusCode)
-		{
-			TempData["Error"] = "Erro ao obter a lista de eventos, " + await response.Content.ReadAsStringAsync();
-			return View(new List<EventoViewModel>());
-		}
+        if (!response.IsSuccessStatusCode)
+        {
+            TempData["Error"] = "Erro ao obter a lista de eventos, " + await response.Content.ReadAsStringAsync();
+            return View(new List<EventoViewModel>());
+        }
 
-		var meusEventos = eventos.Select(x => new EventoViewModel()
-		{
-			Evento = x,
-			IsInscrito = inscricoes.Any(i => i.EventoId == x.Id)
-		}).ToList();
+        var meusEventos = eventos.Select(x => new EventoViewModel()
+        {
+            Evento = x,
+            IsInscrito = inscricoes.Any(i => i.EventoId == x.Id)
+        }).ToList();
 
-		return View(meusEventos);
-	}
+        return View(meusEventos);
+    }
 
-	public async Task<IActionResult> Inscrever(Guid id)
-	{
-		var user = HttpContext.Session.GetUserSession();
+    public async Task<IActionResult> Inscrever(Guid id)
+    {
+        var user = HttpContext.Session.GetUserSession();
 
-		if (user is null)
-		{
-			TempData["warning"] = "Necessário estar logado para se inscrever em um evento";
-			return RedirectToAction("Login", "Usuario");
-		}
+        if (user is null)
+        {
+            TempData["warning"] = "Necessário estar logado para se inscrever em um evento";
+            return RedirectToAction("Login", "Usuario");
+        }
 
-		var token = HttpContext.Session.GetString("Token");
-		_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        var token = HttpContext.Session.GetString("Token");
+        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-		var response = await _client.GetAsync($"eventos?id={id}");
+        var response = await _client.GetAsync($"eventos?id={id}");
 
-		if (!response.IsSuccessStatusCode)
-		{
-			TempData["Error"] = "Erro ao obter a lista de eventos, " + await response.Content.ReadAsStringAsync();
-			response = await _client.GetAsync("eventos/getAll");
-			return View("Index", await response.Content.ReadFromJsonAsync<List<Evento>>());
-		}
+        if (!response.IsSuccessStatusCode)
+        {
+            TempData["Error"] = "Erro ao obter a lista de eventos, " + await response.Content.ReadAsStringAsync();
+            response = await _client.GetAsync("eventos/getAll");
+            return View("Index", await response.Content.ReadFromJsonAsync<List<Evento>>());
+        }
 
-		var evento = await response.Content.ReadFromJsonAsync<Evento>();
+        var evento = await response.Content.ReadFromJsonAsync<Evento>();
 
-		if (evento is null)
-		{
-			TempData["Error"] = "Evento não encontrado.";
-		}
-		else
-		{
-			if(evento.VagasUtilizadas >= evento.Vagas)
-			{
-				TempData["Error"] = "Não há mais vagas disponíveis para este evento.";
-				return RedirectToAction("Index");
-			}
+        if (evento is null)
+        {
+            TempData["Error"] = "Evento não encontrado.";
+        }
+        else
+        {
+            if (evento.VagasUtilizadas >= evento.Vagas)
+            {
+                TempData["Error"] = "Não há mais vagas disponíveis para este evento.";
+                return RedirectToAction("Index");
+            }
 
-			var inscricao = new Inscricao()
-			{
-				DataInscricao = DateTime.Now,
-				EventoId = evento.Id,
-				Id = Guid.NewGuid(),
-				UserId = user.Id
-			};
+            var inscricao = new Inscricao()
+            {
+                DataInscricao = DateTime.Now,
+                EventoId = evento.Id,
+                Id = Guid.NewGuid(),
+                UserId = user.Id
+            };
 
-			response = await _client.PostAsJsonAsync("inscricoes", inscricao);
+            response = await _client.PostAsJsonAsync("inscricoes", inscricao);
 
-			if (!response.IsSuccessStatusCode)
-			{
-				TempData["Error"] = "Não foi possivel confirmar a inscrição.";
-			}
-			else
-			{
-				TempData["Success"] = $"Inscrição realizada com sucesso no evento '{evento.Titulo}'!";
-			}
-		}
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "Não foi possivel confirmar a inscrição.";
+            }
+            else
+            {
+                TempData["Success"] = $"Inscrição realizada com sucesso no evento '{evento.Titulo}'!";
 
-		return RedirectToAction("Index");
+                Email email = new()
+                {
+                    Destinatario = user.Email,
+                    Mensagem = $"Olá {user.Nome}, sua inscrição no evento '{evento.Titulo}' foi realizada com sucesso."
+                };
+
+                await _clientEmail.PostAsJsonAsync("/email/enviar", email);
+            }
+
+        }
+
+        return RedirectToAction("Index");
 
 
-		//response = await _client.GetAsync("eventos/getAll");
-		//return View("Index", await response.Content.ReadFromJsonAsync<List<Evento>>());
-	}
+        //response = await _client.GetAsync("eventos/getAll");
+        //return View("Index", await response.Content.ReadFromJsonAsync<List<Evento>>());
+    }
 }

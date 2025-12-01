@@ -84,7 +84,7 @@ public partial class FormPrincipal : Form
 
 			response = await Config.HttpClientEvento.PostAsJsonAsync("checkIn", checkIn);
 
-			if (!response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
 			{
 				MessageBox.Show("Erro ao sincronizar check-ins. Processo interrompido.");
 				return false;

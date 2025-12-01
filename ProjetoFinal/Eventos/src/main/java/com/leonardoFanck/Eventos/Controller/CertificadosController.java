@@ -6,20 +6,16 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.leonardoFanck.Eventos.Model.Certificado;
-import com.leonardoFanck.Eventos.Model.CheckIn;
 import com.leonardoFanck.Eventos.Model.Evento;
 import com.leonardoFanck.Eventos.Model.Usuario;
 import com.leonardoFanck.Eventos.Repository.CertificadoRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.ByteArrayOutputStream;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

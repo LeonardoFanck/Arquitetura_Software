@@ -90,14 +90,21 @@ public class InscricoesController : Controller
 		var token = HttpContext.Session.GetString("Token");
 		_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-		//var user = HttpContext.Session.GetUserSession();
-
+		var user = HttpContext.Session.GetUserSession()!;
 
 		var response = await _client.DeleteAsync($"inscricoes?id={id}");
 
 		if (!response.IsSuccessStatusCode)
 			TempData["Error"] = "Erro ao tentar deletar a inscrição, " + await response.Content.ReadAsStringAsync();
 
-		return RedirectToAction("Index");
+        Email email = new()
+        {
+            Destinatario = user.Email,
+            Mensagem = $"Olá {user.Nome}, sua inscrição foi cancelada com sucesso. Esperamos vê-lo em um próximo evento!"
+        };
+
+        await _clientCertificado.PostAsJsonAsync("/email/enviar", email);
+
+        return RedirectToAction("Index");
 	}
 }

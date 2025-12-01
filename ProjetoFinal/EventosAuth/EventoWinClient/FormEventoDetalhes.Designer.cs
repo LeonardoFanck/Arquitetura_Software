@@ -20,53 +20,53 @@
 			base.Dispose(disposing);
 		}
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
-			GridInscricoes = new DataGridView();
-			BtnAdicionar = new Button();
-			((System.ComponentModel.ISupportInitialize)GridInscricoes).BeginInit();
-			SuspendLayout();
-			// 
-			// GridInscricoes
-			// 
-			GridInscricoes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			GridInscricoes.Location = new Point(12, 141);
-			GridInscricoes.Name = "GridInscricoes";
-			GridInscricoes.Size = new Size(711, 406);
-			GridInscricoes.TabIndex = 0;
-			// 
-			// BtnAdicionar
-			// 
-			BtnAdicionar.Location = new Point(539, 103);
-			BtnAdicionar.Name = "BtnAdicionar";
-			BtnAdicionar.Size = new Size(184, 32);
-			BtnAdicionar.TabIndex = 1;
-			BtnAdicionar.Text = "Adicionar ao evento";
-			BtnAdicionar.UseVisualStyleBackColor = true;
-			BtnAdicionar.Click += BtnAdicionar_Click;
-			// 
-			// FormEventoDetalhes
-			// 
-			AutoScaleDimensions = new SizeF(7F, 15F);
-			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(735, 562);
-			Controls.Add(BtnAdicionar);
-			Controls.Add(GridInscricoes);
-			Name = "FormEventoDetalhes";
-			Text = "FormEventoDetalhes";
-			((System.ComponentModel.ISupportInitialize)GridInscricoes).EndInit();
-			ResumeLayout(false);
-		}
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            GridInscricoes = new DataGridView();
+            BtnAdicionar = new Button();
+            ((System.ComponentModel.ISupportInitialize)GridInscricoes).BeginInit();
+            SuspendLayout();
+            // 
+            // GridInscricoes
+            // 
+            GridInscricoes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            GridInscricoes.Location = new Point(12, 50);
+            GridInscricoes.Name = "GridInscricoes";
+            GridInscricoes.Size = new Size(711, 406);
+            GridInscricoes.TabIndex = 0;
+            // 
+            // BtnAdicionar
+            // 
+            BtnAdicionar.Location = new Point(539, 12);
+            BtnAdicionar.Name = "BtnAdicionar";
+            BtnAdicionar.Size = new Size(184, 32);
+            BtnAdicionar.TabIndex = 1;
+            BtnAdicionar.Text = "Adicionar ao evento";
+            BtnAdicionar.UseVisualStyleBackColor = true;
+            BtnAdicionar.Click += BtnAdicionar_Click;
+            // 
+            // FormEventoDetalhes
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(735, 467);
+            Controls.Add(BtnAdicionar);
+            Controls.Add(GridInscricoes);
+            Name = "FormEventoDetalhes";
+            Text = "FormEventoDetalhes";
+            ((System.ComponentModel.ISupportInitialize)GridInscricoes).EndInit();
+            ResumeLayout(false);
+        }
 
-		#endregion
+        #endregion
 
-		private DataGridView GridInscricoes;
+        private DataGridView GridInscricoes;
 		private Button BtnAdicionar;
 	}
 }
