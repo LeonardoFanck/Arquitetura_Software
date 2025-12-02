@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Senha</label>
+                    <label class="form-label">Senha (Deixe a senha em branco para não alterar)</label>
                     <input name="Senha" type="password" class="form-control" value="@Model.Senha" />
                 </div>
 
@@ -52,3 +52,15 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#Telefone').mask('(00) 00000-0000');
+        });
+    </script>
+}
