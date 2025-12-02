@@ -9,17 +9,17 @@ public static class Config
 
 	public static HttpClient HttpClientAuth { get; } = new HttpClient
 	{
-		BaseAddress = new Uri("https://localhost:7015/")
+		BaseAddress = new Uri("http://177.44.248.41:8081/")
 	};
 
 	public static HttpClient HttpClientEvento { get; } = new HttpClient
 	{
-		BaseAddress = new Uri("https://localhost:7153/")
+		BaseAddress = new Uri("http://177.44.248.41:8082/")
 	};
 
 	public static HttpClient HttpClientCertificado { get; } = new HttpClient
 	{
-		BaseAddress = new Uri("http://localhost:8080/")
+		BaseAddress = new Uri("http://177.44.248.41:8080/")
 	};
 
 	public static bool Internet { get; set; } = true;
