@@ -16,7 +16,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @RestController
@@ -150,6 +153,12 @@ public class CertificadosController {
         PdfDocument pdf = new PdfDocument(writer);
         Document doc = new Document(pdf);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", new Locale("pt", "BR"));
+
+        String dataEvento = evento.getDataFim().format(formatter);
+        String dataEmissao = cert.getDataEmissao().format(formatter);
+
+
         doc.add(new Paragraph("CERTIFICADO DE PARTICIPAÇÃO")
                 .setFontSize(24)
                 .setTextAlignment(TextAlignment.CENTER));
@@ -174,13 +183,13 @@ public class CertificadosController {
                 .setFontSize(12));
 
         doc.add(new Paragraph("\nData do Evento: "
-                + evento.getDataFim())
+                + dataEvento)
                 .setFontSize(12));
 
         doc.add(new Paragraph("\nCódigo de Autenticação: " + cert.getCodigoAutenticacao())
                 .setFontSize(12));
 
-        doc.add(new Paragraph("\nData de Emissão: " + cert.getDataEmissao())
+        doc.add(new Paragraph("\nData de Emissão: " + dataEmissao)
                 .setFontSize(12));
 //
 //        doc.add(new Paragraph("\n\nValide seu certificado em: https://meusistema.com/validar/" + cert.getCodigoAutenticacao())

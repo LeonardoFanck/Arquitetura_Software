@@ -1,5 +1,6 @@
 package com.leonardoFanck.Eventos.Model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public class Evento {
     private String titulo;
     private String descricao;
     private Date dataInicio;
-    private Date dataFim;
+    private LocalDateTime dataFim;
     private int vagas;
 
     public UUID getId() {
@@ -50,11 +51,11 @@ public class Evento {
         this.dataInicio = dataInicio;
     }
 
-    public Date getDataFim() {
+    public LocalDateTime getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(Date dataFim) {
+    public void setDataFim(LocalDateTime dataFim) {
         this.dataFim = dataFim;
     }
 
