@@ -174,7 +174,7 @@ public class CertificadosController {
                 .setFontSize(12));
 
         doc.add(new Paragraph("\nData do Evento: "
-                + evento.getDataInicio() + " até " + evento.getDataFim())
+                + evento.getDataFim())
                 .setFontSize(12));
 
         doc.add(new Paragraph("\nCódigo de Autenticação: " + cert.getCodigoAutenticacao())
@@ -182,9 +182,9 @@ public class CertificadosController {
 
         doc.add(new Paragraph("\nData de Emissão: " + cert.getDataEmissao())
                 .setFontSize(12));
-
-        doc.add(new Paragraph("\n\nValide seu certificado em: https://meusistema.com/validar/" + cert.getCodigoAutenticacao())
-                .setFontSize(12));
+//
+//        doc.add(new Paragraph("\n\nValide seu certificado em: https://meusistema.com/validar/" + cert.getCodigoAutenticacao())
+//                .setFontSize(12));
 
         doc.close();
 

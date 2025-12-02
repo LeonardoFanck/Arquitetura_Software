@@ -1,8 +1,6 @@
 package com.leonardoFanck.Eventos.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,4 +9,19 @@ public class EmailRequest {
     private String destinatario;
     private String mensagem;
 
+    public String getDestinatario() {
+        return destinatario;
+    }
+
+    public void setDestinatario(String destinatario) {
+        this.destinatario = destinatario;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
 }
