@@ -100,7 +100,7 @@
 			Controls.Add(BtnParticipante);
 			Controls.Add(BtnEventos);
 			Name = "FormPrincipal";
-			Text = "FormPrincipal";
+			Text = "Sistema de Eventos";
 			ResumeLayout(false);
 			PerformLayout();
 		}

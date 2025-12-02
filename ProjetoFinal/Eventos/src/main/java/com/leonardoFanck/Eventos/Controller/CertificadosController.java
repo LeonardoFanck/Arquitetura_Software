@@ -121,7 +121,7 @@ public class CertificadosController {
     private byte[] gerarPdf(Certificado cert, String token) {
 
         Usuario usuario = webClient.get()
-                .uri("https://localhost:7015/users?id=" + cert.getUserId())
+                .uri("http://localhost:8081/users?id=" + cert.getUserId())
                 .header("Authorization", token)
                 .retrieve()
                 .bodyToMono(Usuario.class)
@@ -129,7 +129,7 @@ public class CertificadosController {
 
         // -------- 2) Buscar evento --------
         Evento evento = webClient.get()
-                .uri("https://localhost:7153/eventos?id=" + cert.getEventoId())
+                .uri("http://localhost:8082/eventos?id=" + cert.getEventoId())
                 .header("Authorization", token)
                 .retrieve()
                 .bodyToMono(Evento.class)

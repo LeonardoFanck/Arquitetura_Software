@@ -46,6 +46,7 @@ public partial class FormAdicionarUsuarioEvento : Form
 		};
 
 		await _dbContext.Inscricaos.AddAsync(inscricaoLocal);
+		await _dbContext.SaveChangesAsync();
 
 		var checkInLocal = new CheckInLocal()
 		{

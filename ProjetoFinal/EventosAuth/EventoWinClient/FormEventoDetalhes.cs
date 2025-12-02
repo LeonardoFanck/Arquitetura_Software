@@ -3,7 +3,6 @@ using EventoWinClient.Context;
 using EventoWinClient.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 
 namespace EventoWinClient;
 
@@ -40,8 +39,10 @@ public partial class FormEventoDetalhes : Form
 
 	private async void GridInscricoes_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
 	{
-		var inscricao = _inscricoes[e.RowIndex];
-		var usuario = _usuarios.First(x => x.Id == inscricao.UserId);
+		var userId = (Guid)GridInscricoes[GridInscricoes.Columns["Id"].Index, e.RowIndex].Value;
+
+		//var inscricao = _inscricoes[e.RowIndex];
+		var usuario = _usuarios.First(x => x.Id == userId);
 		var checkInExistente = _checkIns.FirstOrDefault(x => x.UserId == usuario.Id);
 
 		if (checkInExistente is not null)
@@ -87,7 +88,7 @@ public partial class FormEventoDetalhes : Form
 			Mensagem = $"Olá {usuario.Nome}, seu check-in para o evento {_evento.Titulo} foi realizado com sucesso em {checkIn.DataCheckIn}."
 		};
 
-        await Config.HttpClientCertificado.PostAsJsonAsync("email/enviar", email);
+		await Config.HttpClientCertificado.PostAsJsonAsync("email/enviar", email);
 
 		checkInLocal.Sincronizado = true;
 
@@ -96,6 +97,8 @@ public partial class FormEventoDetalhes : Form
 		await context.SaveChangesAsync();
 
 		MessageBox.Show("Check-in registrado com sucesso para o usuário: " + usuario.Nome);
+
+		await CarregarGrid();
 	}
 
 	private async void FormEventoDetalhes_Load(object? sender, EventArgs e)
@@ -117,6 +120,7 @@ public partial class FormEventoDetalhes : Form
 						 join usuario in _usuarios on inscricao.UserId equals usuario.Id
 						 select new
 						 {
+							 usuario.Id,
 							 usuario.Nome,
 							 usuario.Email,
 							 usuario.Telefone,
@@ -125,12 +129,13 @@ public partial class FormEventoDetalhes : Form
 						 }).OrderBy(x => x.CheckIn == false).ThenBy(x => x.Email).ToList();
 
 		GridInscricoes.DataSource = dadosGrid;
+		GridInscricoes.Columns["Id"].Visible = false;
 	}
 
 	private async void BtnAdicionar_Click(object sender, EventArgs e)
 	{
 		FormAdicionarUsuarioEvento form = new(_evento);
-	 	form.ShowDialog();
+		form.ShowDialog();
 
 		await CarregarGrid();
 	}
